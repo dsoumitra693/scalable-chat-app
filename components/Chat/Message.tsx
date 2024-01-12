@@ -15,7 +15,7 @@ const Message = ({ content, user, status, timestamp }: IMessage) => {
 
   return (
     <View style={containerStyle}>
-      <View style={[styles.messageContentContainer, { backgroundColor: theme.colors.secondary }]}>
+      <View style={[styles.messageContentContainer, { backgroundColor: theme.colors.primary }]}>
         <Text style={[styles.messageText, { color: theme.colors.text }]}>{content}</Text>
         <View style={styles.timestampContainer}>
           <Text style={[styles.timestampText, { color: theme.colors.disabled }]}>{timestamp}</Text>

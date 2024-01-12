@@ -7,7 +7,7 @@ const Header = () => {
   const {colors} = useTheme()
   const router = useRouter()
   return (
-    <Appbar.Header style={{backgroundColor:colors.primary, paddingRight:10}}>
+    <Appbar.Header style={{backgroundColor:colors.background, paddingRight:10}}>
       <Appbar.BackAction onPress={()=>router.back()}/>
       <Appbar.Content title={'Soumo'} />
       <View style={{ position: 'relative', justifyContent: 'center', alignItems: 'center' }}>
@@ -21,7 +21,7 @@ const Header = () => {
           top: 3,
           right: 1,
           borderWidth: 1.5,
-          borderColor: colors.primary
+          borderColor: colors.background
         }} />
       </View>
     </Appbar.Header>

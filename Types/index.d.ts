@@ -1,6 +1,7 @@
 export interface IMessage {
     content: string;
-    user: string;
+    sender: string;
+    reciver:string
     status: string | 'read' | 'sent' | 'received';
     timestamp: string;
   }

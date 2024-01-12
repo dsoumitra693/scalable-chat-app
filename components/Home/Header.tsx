@@ -8,11 +8,11 @@ const Header = () => {
   const { colors } = useTheme()
 
   return (
-    <View style={[styles.header, {backgroundColor:colors.primary}]}>
+    <View style={[styles.header, {backgroundColor:colors.background}]}>
       <Text style={styles.headerText}>FastChat</Text>
       <IconButton
         icon="menu"
-        color={colors.secondary}
+        color={colors.primary}
         size={25}
         onPress={() => console.log('Pressed')}
       />

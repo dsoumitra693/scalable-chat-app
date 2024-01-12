@@ -10,18 +10,20 @@ const SendMsg = ({ msges, setMsges }) => {
     const {sendMessage} = useSocket()
 
     const handleMsgSent = (): void => {
-        setMsg('')
-        let newMsg = {
-            content: msg as string,
-            timestamp: '12:00',
-            user: 'Soumo',
-            status: 'read'
+        if(msg.trim().length > 0) {
+            setMsg('')
+            let newMsg = {
+                content: msg as string,
+                timestamp: '12:00',
+                user: 'Soumo',
+                status: 'read'
+            }
+            sendMessage(newMsg)
+            setMsges([...msges, newMsg])
         }
-        sendMessage(newMsg)
-        setMsges([...msges, newMsg])
     }
     return (
-        <View style={[styles.inputWrapper, { backgroundColor: colors.primary, }]}>
+        <View style={[styles.inputWrapper, { backgroundColor: colors.background, }]}>
             <TextInput
                 style={styles.input}
                 placeholder="Send Message..."
@@ -32,7 +34,7 @@ const SendMsg = ({ msges, setMsges }) => {
                 value={msg}
                 editable={true} />
             <IconButton icon="send"
-                color={colors.secondary}
+                color={colors.primary}
                 animated
                 onPress={handleMsgSent} />
         </View>

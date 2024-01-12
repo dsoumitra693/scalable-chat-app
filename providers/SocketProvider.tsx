@@ -38,13 +38,13 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         let _socket: Socket;
         try {
             console.log('Try to connect socket')
-            _socket = io("https://cf02-42-108-145-9.ngrok-free.app", {
+            _socket = io("https://0ab6-42-105-102-65.ngrok-free.app", {
                 reconnection: true,
             });
 
 
             _socket.on('connect', () => {
-                console.log('Connected to server');
+                console.log('Connected to socket server');
             });
 
             _socket.on('error', (error) => {

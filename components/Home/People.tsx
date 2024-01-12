@@ -19,7 +19,7 @@ const People = (props: IPeople) => {
         <List.Item
             onPress={navigateToChat}
             title={props.name}
-            style={{ padding: 10, height: 70,backgroundColor: theme.colors.primary }}
+            style={{ padding: 10, height: 70,backgroundColor: theme.colors.background }}
             description={formateText(props.lastMsg, MAX_MSG_LENGTH)}
             left={() => (
                 <View style={{ position: 'relative' }}>
@@ -33,7 +33,7 @@ const People = (props: IPeople) => {
                         top: 2,
                         right: 5,
                         borderWidth: 1.5,
-                        borderColor: theme.colors.primary
+                        borderColor: theme.colors.background
                     }} />
                 </View>
             )}
@@ -43,7 +43,7 @@ const People = (props: IPeople) => {
                     alignItems: 'center'
                 }}>
                     <Text>4 min</Text>
-                    <Badge style={{ backgroundColor: theme.colors.secondary }}>3</Badge>
+                    <Badge style={{ backgroundColor: theme.colors.primary }}>3</Badge>
                 </View>
             )}
         />

@@ -1,3 +1,8 @@
 export interface IMessage {
-    content:string;
-}
+    content: string;
+    sender: string;
+    reciver?:string
+    status: string | 'read' | 'sent' | 'received';
+    timestamp: string;
+  }
+  
