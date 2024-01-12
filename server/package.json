@@ -4,12 +4,21 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "tsc-watch --onSuccess \"node dist/index.js\" ",
-    "start": "node dist/index",
-    "build": "tsc -p ."
+    "start": "tsc && cd build && nodemon index",
+    "dev": "tsc && nodemon index.ts",
+    "build": "rimraf build && tsc",
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add build",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ],
   "devDependencies": {
-    "tsc-watch": "^6.0.4",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^5.0.5",
     "typescript": "^5.3.3"
   },
   "dependencies": {
