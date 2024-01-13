@@ -2,6 +2,8 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
+  "repository": "https://github.com/dsoumitra693/sacalable-chat-app.git",
+  "author": "Soumitra Das (Sam) <dsoumitra693@gmail.com>",
   "license": "MIT",
   "scripts": {
     "dev": "tsc-watch --onSuccess \"node dist/index.js\" ",
@@ -10,19 +12,21 @@
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add build"
   },
-  "pre-commit": [
-    "ts.check",
-    "build",
-    "add-build"
-  ],
+  "dependencies": {
+    "@types/express-list-endpoints": "^6.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-list-endpoints": "^6.0.0",
+    "ioredis": "^5.3.2",
+    "node-appwrite": "^11.1.0",
+    "socket.io": "^4.7.4"
+  },
   "devDependencies": {
-    "pre-commit": "^1.2.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.0",
     "tsc-watch": "^6.0.4",
     "typescript": "^5.3.3"
-  },
-  "dependencies": {
-    "dotenv": "^16.3.1",
-    "ioredis": "^5.3.2",
-    "socket.io": "^4.7.3"
   }
 }

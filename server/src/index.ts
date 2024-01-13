@@ -1,21 +1,36 @@
-import http from "http"
-import SocketServices from "./services/socket"
-require('dotenv').config();
+import express, { Request, Response } from 'express';
+import http from 'http';
+import SocketServices from './services/socket';
+import authRouter from './routes/auth';
+import * as dotenv from 'dotenv'
+import cors from 'cors';
+import listendpoint from 'express-list-endpoints';
 
 async function init() {
-
-  const httpServer = http.createServer((req, res)=>{
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.write('Congrats you have a created a web server');
-    res.end();
-  });
-  
+  dotenv.config()
+  const app = express();
+  const httpServer = http.createServer(app);
   const socketService = new SocketServices(httpServer)
-  const PORT = process.env.PORT
+  const port = process.env.PORT || 8080
 
-  httpServer.listen(PORT, () => console.log(`HTTP server running on PORT ${PORT}`))
+  //middlewares
+  app.use(cors({origin: true, credentials: true}))
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }))
+
+
+  // routes
+  app.use('/auth', authRouter)
+  app.get('/', (req:Request, res:Response) => {
+    res.send("Welcome to fast chat server")
+  });
+
+  httpServer.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+  });
 
   socketService.initListner()
+  console.log(listendpoint(app))
 }
 
 init();

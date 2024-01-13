@@ -1,3 +1,5 @@
+import { AppwriteException } from "appwrite";
+
 export interface IMessage {
     content: string;
     sender: string;
@@ -5,4 +7,11 @@ export interface IMessage {
     status: string | 'read' | 'sent' | 'received';
     timestamp: string;
   }
-  
+
+export interface IUser {
+  userId:string;
+  name:string;
+  phone:string;
+  countrycode: string;
+  session?:string;
+}

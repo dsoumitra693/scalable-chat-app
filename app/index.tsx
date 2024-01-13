@@ -1,18 +1,13 @@
 import React from 'react'
-import { Header,Peoples } from '../components/Home'
-import { StatusBar } from 'expo-status-bar'
-import { useTheme } from 'react-native-paper'
+import Home from './Home'
+import Auth from './Auth'
+import { useAuth } from '../providers/AuthProvider';
 
 
 const Main = () => {
-  const {colors} = useTheme()
-  return (
-    <>
-    <StatusBar backgroundColor={colors.background}/>
-        <Header />
-        <Peoples />
-    </>
-  )
+  const {currentUser} = useAuth();
+  if (currentUser) return <Home />
+  return <Auth />
 }
 
 export default Main
