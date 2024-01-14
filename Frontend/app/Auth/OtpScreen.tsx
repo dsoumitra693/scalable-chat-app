@@ -9,9 +9,9 @@ const OtpScreen = () => {
   const [OTP, setOTP] = useState<string>()
   const [isDisabled, setIsdisabled] = useState(true)
   const router = useRouter()
-  const { loginUser } = useAuth()
+  const { setActiveCurrentUser } = useAuth()
   const { userId, phone } = useLocalSearchParams();
-  const {verifyOtp}=useAuth()
+  const { verifyOtp, createJWT } = useAuth()
 
   useEffect(() => {
     setIsdisabled(OTP?.length < 6)
@@ -19,17 +19,21 @@ const OtpScreen = () => {
 
   const handleOtpSubmit = async () => {
     console.log(userId)
-    let { jwt } = await verifyOtp(userId as string, OTP)
+    let res = await verifyOtp(userId as string, OTP)
 
-    console.log(jwt)
-    loginUser({
-      userId: userId as string,
-      name: `User${userId.slice(10)}`,
-      phone: phone as string,
-      countrycode: '+91',
-      jwt
-    })
-    router.push('/')
+    if (!!res) {
+      setActiveCurrentUser({
+        userId: userId as string,
+        name: `User${userId.slice(10)}`,
+        phone: phone as string,
+        countrycode: '+91',
+      })
+      router.push('/Auth/NameScreen')
+
+      return
+    }
+
+    return router.push('/')
   }
   return (
     <AuthLayout>
