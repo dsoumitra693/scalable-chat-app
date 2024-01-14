@@ -2,19 +2,22 @@ import React, { useEffect, useState } from 'react'
 import AuthLayout from './AuthLayout'
 import { Button, TextInput, useTheme } from 'react-native-paper'
 import { useRouter } from 'expo-router'
-import { useRequestOtp } from '../../Api/Auth'
+import { useAuth } from '../../providers/AuthProvider'
 
 const PhoneScreen = () => {
   const theme = useTheme()
   const [phone, setPhone] = useState<string>()
   const [isDisabled, setIsdisabled] = useState(true)
   const router = useRouter()
+  const { requestOtp } = useAuth()
+
+
   useEffect(() => {
     setIsdisabled(phone?.length < 10)
   }, [phone])
 
   const handlePhoneSubmit = async () => {
-    let userId = await useRequestOtp<string>(`91${phone}`)
+    let userId = await requestOtp(`91${phone}`)
     console.log(userId)
     router.push({ pathname: `/Auth/OtpScreen`, params: { userId, phone } })
   }

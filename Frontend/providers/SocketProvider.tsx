@@ -2,6 +2,8 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { IMessage } from '../Types';
 import { io, Socket } from 'socket.io-client';
 
+const SERVER_URL = "https://scalable-fast-chat-server.onrender.com"
+
 interface SocketProviderProps {
     children?: React.ReactNode;
 }
@@ -38,7 +40,7 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         let _socket: Socket;
         try {
             console.log('Try to connect socket')
-            _socket = io("https://2c58-42-108-145-254.ngrok-free.app", {
+            _socket = io(SERVER_URL, {
                 reconnection: true,
             });
 

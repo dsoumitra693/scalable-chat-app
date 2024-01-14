@@ -3,7 +3,6 @@ import AuthLayout from './AuthLayout'
 import { Button, TextInput, useTheme } from 'react-native-paper'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useAuth } from '../../providers/AuthProvider'
-import { useVerifyOtp } from '../../Api/Auth'
 
 const OtpScreen = () => {
   const { colors } = useTheme()
@@ -12,6 +11,7 @@ const OtpScreen = () => {
   const router = useRouter()
   const { loginUser } = useAuth()
   const { userId, phone } = useLocalSearchParams();
+  const {verifyOtp}=useAuth()
 
   useEffect(() => {
     setIsdisabled(OTP?.length < 6)
@@ -19,7 +19,7 @@ const OtpScreen = () => {
 
   const handleOtpSubmit = async () => {
     console.log(userId)
-    let { jwt } = await useVerifyOtp<{ jwt: string }>(userId as string, OTP)
+    let { jwt } = await verifyOtp(userId as string, OTP)
 
     console.log(jwt)
     loginUser({
