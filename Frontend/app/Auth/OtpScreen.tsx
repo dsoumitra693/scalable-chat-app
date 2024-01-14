@@ -18,13 +18,17 @@ const OtpScreen = () => {
   }, [OTP])
 
   const handleOtpSubmit = async () => {
-    let session = useVerifyOtp(userId as string, OTP)
-    // loginUser({
-    //   userId: userId as string,
-    //   name: 'Soumo',
-    //   phone: phone as string,
-    //   countrycode: '+91'
-    // })
+    console.log(userId)
+    let { jwt } = await useVerifyOtp<{ jwt: string }>(userId as string, OTP)
+
+    console.log(jwt)
+    loginUser({
+      userId: userId as string,
+      name: `User${userId.slice(10)}`,
+      phone: phone as string,
+      countrycode: '+91',
+      jwt
+    })
     router.push('/')
   }
   return (

@@ -38,7 +38,7 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         let _socket: Socket;
         try {
             console.log('Try to connect socket')
-            _socket = io("https://4e7a-42-108-145-254.ngrok-free.app", {
+            _socket = io("https://2c58-42-108-145-254.ngrok-free.app", {
                 reconnection: true,
             });
 

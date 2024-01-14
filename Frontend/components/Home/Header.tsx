@@ -1,15 +1,18 @@
 import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { IconButton, useTheme } from 'react-native-paper'
+import { useAuth } from '../../providers/AuthProvider'
 
 
 const statusbarHeight = StatusBar.currentHeight
 const Header = () => {
   const { colors } = useTheme()
 
+  const {currentUser} = useAuth()
+
   return (
     <View style={[styles.header, {backgroundColor:colors.background}]}>
-      <Text style={styles.headerText}>FastChat</Text>
+      <Text style={[styles.headerText, {color:colors.text}]}>Hello! {currentUser.name}</Text>
       <IconButton
         icon="menu"
         color={colors.primary}

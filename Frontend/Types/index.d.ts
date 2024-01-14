@@ -13,5 +13,5 @@ export interface IUser {
   name:string;
   phone:string;
   countrycode: string;
-  session?:string;
+  jwt?:string;
 }

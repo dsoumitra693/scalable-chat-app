@@ -14,9 +14,9 @@ const PhoneScreen = () => {
   }, [phone])
 
   const handlePhoneSubmit = async () => {
-    let res = await useRequestOtp<{userId:string}>(`91${phone}`)
-    console.log(res.userId)
-    router.push({ pathname: `/Auth/OtpScreen`, params: { userId:res.userId, phone } })
+    let userId = await useRequestOtp<string>(`91${phone}`)
+    console.log(userId)
+    router.push({ pathname: `/Auth/OtpScreen`, params: { userId, phone } })
   }
 
   return (
