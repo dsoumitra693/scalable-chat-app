@@ -29,7 +29,7 @@ const Header = () => {
         <Menu
           visible={visible}
           onDismiss={closeMenu}
-          contentStyle={{ backgroundColor: colors.backdrop }}
+          contentStyle={{ backgroundColor: colors.backdrop, borderRadius:10 }}
           anchor={<IconButton icon="menu" color={colors.primary} size={25} onPress={openMenu} />}>
           <Menu.Item onPress={logoutUser} title="Logout" icon={'logout'} />
           <Divider />

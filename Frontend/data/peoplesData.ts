@@ -1,4 +1,4 @@
-export const peopleData = [
+export const peoplesData = [
     {
         name: "Heddi",
         avatar: "https://robohash.org/beataesuntquidem.png?size=50x50&set=set1",
