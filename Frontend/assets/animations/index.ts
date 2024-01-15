@@ -1,0 +1,1 @@
+export { default as chattingAnimation } from './Chatting.json'

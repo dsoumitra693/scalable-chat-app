@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import AuthLayout from './AuthLayout'
-import { Button, TextInput, useTheme } from 'react-native-paper'
+import { TextInput, useTheme } from 'react-native-paper'
 import { useRouter } from 'expo-router'
 import { useAuth } from '../../providers/AuthProvider'
+import { AuthBtn } from '../../components/Auth'
 
 const NameScreen = () => {
     const { colors } = useTheme()
@@ -10,7 +11,7 @@ const NameScreen = () => {
     const router = useRouter()
     const { currentUser, setActiveCurrentUser } = useAuth()
     const { updateName } = useAuth()
-    const [name, setName] = useState<string>(currentUser.name)
+    const [name, setName] = useState(currentUser.name)
 
     useEffect(() => {
         setIsdisabled(name?.length < 1)
@@ -36,12 +37,10 @@ const NameScreen = () => {
                 outlineColor={colors.primary}
                 onChangeText={text => setName(text)}
                 style={{ width: 300, height: 60, fontSize: 20, margin: 20, }} />
-            <Button mode="contained"
-                style={{ padding: 10, fontSize: 20 }}
+            <AuthBtn
                 disabled={isDisabled}
-                onPress={handleNameSubmit}>
-                Change your name to a cool one!
-            </Button>
+                onPress={handleNameSubmit}
+                text='Give a cool name!' />
         </AuthLayout>
     )
 }

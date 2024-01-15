@@ -7,8 +7,8 @@ import LoadingScreen from '../components/LoadingScreen';
 
 const Main = () => {
   const { currentUser } = useAuth();
-  if (currentUser === null) return <LoadingScreen />
-  if (currentUser === undefined) return <Auth />
+  // if (currentUser === null) return <LoadingScreen />
+  if (!currentUser ) return <Auth />
   return <Home/>
 }
 

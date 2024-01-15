@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import AuthLayout from './AuthLayout'
-import { Button, TextInput, useTheme } from 'react-native-paper'
-import { useRouter } from 'expo-router'
+import { TextInput, useTheme } from 'react-native-paper'
+import { Link, useRouter } from 'expo-router'
 import { useAuth } from '../../providers/AuthProvider'
+import { AuthBtn } from '../../components/Auth'
 
 const PhoneScreen = () => {
   const theme = useTheme()
-  const [phone, setPhone] = useState<string>()
+  const [phone, setPhone] = useState('')
   const [isDisabled, setIsdisabled] = useState(true)
   const router = useRouter()
   const { requestOtp } = useAuth()
@@ -17,7 +18,8 @@ const PhoneScreen = () => {
   }, [phone])
 
   const handlePhoneSubmit = async () => {
-    let userId = await requestOtp(`91${phone}`)
+    // let userId = await requestOtp(`91${phone}`)
+    let userId = ''
     console.log(userId)
     router.push({ pathname: `/Auth/OtpScreen`, params: { userId, phone } })
   }
@@ -33,13 +35,12 @@ const PhoneScreen = () => {
         outlineColor={theme.colors.primary}
         onChangeText={text => setPhone(text)}
         style={{ width: 300, height: 60, fontSize: 20, margin: 20 }} />
-      <Button mode="contained"
-        style={{ padding: 10, fontSize: 20 }}
-        disabled={isDisabled}
-        theme={theme}
-        onPress={handlePhoneSubmit}>
-        Get OTP
-      </Button>
+      <Link href={'/Auth/OtpScreen'} asChild>
+        <AuthBtn
+          text='Get OTP'
+          disabled={isDisabled}
+          onPress={handlePhoneSubmit} />
+      </Link>
     </AuthLayout>
   )
 }

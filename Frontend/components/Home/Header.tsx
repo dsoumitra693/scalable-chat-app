@@ -7,9 +7,9 @@ import { useAuth } from '../../providers/AuthProvider'
 const statusbarHeight = StatusBar.currentHeight
 const Header = () => {
   const { colors } = useTheme()
-  const [visible, setVisible] = useState<boolean>()
+  const [visible, setVisible] = useState(false)
   const { currentUser, logoutUser } = useAuth()
-  const [searchQuery, setSearchQuery] = useState<string>()
+  const [searchQuery, setSearchQuery] = useState('')
 
   const openMenu = () => setVisible(true)
   const closeMenu = () => setVisible(false)

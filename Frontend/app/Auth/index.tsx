@@ -1,18 +1,24 @@
 import React from 'react'
-import { Button, useTheme } from 'react-native-paper'
-import { Link } from 'expo-router'
 import AuthLayout from './AuthLayout'
+import AnimatedLottieView from 'lottie-react-native'
+import { chattingAnimation } from '../../assets/animations'
+import { AuthBtn } from '../../components/Auth'
+import { useRouter } from 'expo-router'
 
 const Auth = () => {
-
+  const router = useRouter()
   return (
     <AuthLayout>
-      <Link href={'/Auth/PhoneScreen'} asChild>
-        <Button mode="contained">
-          Continue to Login
-        </Button>
-      </Link>
+      <AnimatedLottieView
+        autoPlay
+        style={{
+          width: 500,
+        }}
+        source={chattingAnimation}
+      />
+      <AuthBtn text={"Continue to Login"} onPress={() => { router.push('/Auth/PhoneScreen') }} />
     </AuthLayout>
-  )}
+  )
+}
 
 export default Auth

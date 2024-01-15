@@ -2,20 +2,22 @@ import { View, TextInput, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { IconButton, useTheme } from 'react-native-paper'
 import { useSocket } from '../../providers/SocketProvider'
+import { IMessage } from '../../Types'
 
 const SendMsg = ({ msges, setMsges }) => {
     const { colors } = useTheme()
-    const [msg, setMsg] = useState<string>()
+    const [msg, setMsg] = useState('')
 
     const {sendMessage} = useSocket()
 
     const handleMsgSent = (): void => {
         if(msg.trim().length > 0) {
             setMsg('')
-            let newMsg = {
+            let newMsg:IMessage = {
                 content: msg as string,
                 timestamp: '12:00',
-                user: 'Soumo',
+                sender: 'Soumo',
+                reciver:'',
                 status: 'read'
             }
             sendMessage(newMsg)

@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import AuthLayout from './AuthLayout'
-import { Button, TextInput, useTheme } from 'react-native-paper'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import { TextInput, useTheme } from 'react-native-paper'
+import { Href, useLocalSearchParams, useRouter } from 'expo-router'
 import { useAuth } from '../../providers/AuthProvider'
+import { AuthBtn } from '../../components/Auth'
 
 const OtpScreen = () => {
   const { colors } = useTheme()
-  const [OTP, setOTP] = useState<string>()
+  const [OTP, setOTP] = useState('')
   const [isDisabled, setIsdisabled] = useState(true)
   const router = useRouter()
   const { setActiveCurrentUser } = useAuth()
   const { userId, phone } = useLocalSearchParams();
-  const { verifyOtp, createJWT } = useAuth()
+  const { verifyOtp } = useAuth()
 
   useEffect(() => {
     setIsdisabled(OTP?.length < 6)
@@ -19,21 +20,22 @@ const OtpScreen = () => {
 
   const handleOtpSubmit = async () => {
     console.log(userId)
-    let res = await verifyOtp(userId as string, OTP)
+    // let res = await verifyOtp(userId as string, OTP)
+    let res = 'response'
+    let nextScreenUrl: Href<string> = '/'
 
     if (!!res) {
       setActiveCurrentUser({
         userId: userId as string,
-        name: `User${userId.slice(10)}`,
+        name: `User${userId?.slice(10)}`,
         phone: phone as string,
         countrycode: '+91',
       })
-      router.push('/Auth/NameScreen')
+      nextScreenUrl = '/Auth/NameScreen'
 
-      return
     }
 
-    return router.push('/')
+    return router.push(nextScreenUrl)
   }
   return (
     <AuthLayout>
@@ -46,12 +48,10 @@ const OtpScreen = () => {
         outlineColor={colors.primary}
         onChangeText={text => setOTP(text)}
         style={{ width: 300, height: 60, fontSize: 20, margin: 20, }} />
-      <Button mode="contained"
-        style={{ padding: 10, fontSize: 20 }}
+      <AuthBtn
         disabled={isDisabled}
-        onPress={handleOtpSubmit}>
-        Login
-      </Button>
+        onPress={handleOtpSubmit}
+        text='Login' />
     </AuthLayout>
   )
 }
