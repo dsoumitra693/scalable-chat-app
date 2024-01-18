@@ -11,7 +11,7 @@ const Messages = ({ msges }) => {
   const scrollToEnd = () => flashListRef.current?.scrollToEnd({ animated: true })
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.disabled }}>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
       <FlashList
         ref={flashListRef}
         onLoad={scrollToEnd}

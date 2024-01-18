@@ -16,7 +16,7 @@ const Header = () => {
   const onChangeSearch = (query: string) => setSearchQuery(query)
 
   return (
-    <View style={[styles.header, { backgroundColor: colors.background }]}>
+    <View style={[styles.header, { backgroundColor: colors.surface }]}>
       <View style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -29,10 +29,9 @@ const Header = () => {
         <Menu
           visible={visible}
           onDismiss={closeMenu}
-          contentStyle={{ backgroundColor: colors.backdrop, borderRadius:10 }}
+          contentStyle={{ backgroundColor: colors.background, borderRadius:10, top:30 }}
           anchor={<IconButton icon="menu" color={colors.primary} size={25} onPress={openMenu} />}>
           <Menu.Item onPress={logoutUser} title="Logout" icon={'logout'} />
-          <Divider />
         </Menu>
       </View>
       <Searchbar

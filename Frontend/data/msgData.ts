@@ -1,4 +1,4 @@
-export const msgData = []
+export const msgData =[]
 // [{
 //     content: "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pharetra, magna vestibulum aliquet ultrices, erat tortor sollicitudin mi, sit amet lobortis sapien sapien non mi. Integer ac neque.",
 //     user: "Vita",

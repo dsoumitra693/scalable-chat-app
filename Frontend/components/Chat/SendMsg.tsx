@@ -8,16 +8,17 @@ const SendMsg = ({ msges, setMsges }) => {
     const { colors } = useTheme()
     const [msg, setMsg] = useState('')
 
-    const {sendMessage} = useSocket()
-
+    const { sendMessage } = useSocket()
+    
     const handleMsgSent = (): void => {
-        if(msg.trim().length > 0) {
+        let newText = msg.trim()
+        if (newText.length > 0) {
             setMsg('')
-            let newMsg:IMessage = {
-                content: msg as string,
+            let newMsg: IMessage = {
+                content: newText,
                 timestamp: '12:00',
                 sender: 'Soumo',
-                reciver:'',
+                reciver: '',
                 status: 'read'
             }
             sendMessage(newMsg)
@@ -25,10 +26,11 @@ const SendMsg = ({ msges, setMsges }) => {
         }
     }
     return (
-        <View style={[styles.inputWrapper, { backgroundColor: colors.background, }]}>
+        <View style={[styles.inputWrapper, { backgroundColor: colors.surface, }]}>
             <TextInput
-                style={styles.input}
+                style={[styles.input, { color: colors.text }]}
                 placeholder="Send Message..."
+                placeholderTextColor={colors.disabled}
                 multiline
                 numberOfLines={5}
                 maxLength={256}

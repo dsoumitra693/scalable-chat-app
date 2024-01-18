@@ -32,7 +32,7 @@ const PhoneScreen = () => {
         maxLength={10}
         placeholder='Enter your phone number'
         value={phone}
-        outlineColor={theme.colors.primary}
+        outlineColor={theme.colors.placeholder}
         onChangeText={text => setPhone(text)}
         style={{ width: 300, height: 60, fontSize: 20, margin: 20 }} />
       <Link href={'/Auth/OtpScreen'} asChild>

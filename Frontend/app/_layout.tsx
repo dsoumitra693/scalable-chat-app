@@ -1,8 +1,8 @@
 import React from 'react'
 import { Stack } from 'expo-router'
-import SocketProvider from '../providers/SocketProvider'
 import RootLayout from './RootLayout'
 import AuthProvider from '../providers/AuthProvider'
+import SocketProvider from '../providers/SocketProvider'
 
 const StackLayout = () => {
   return (

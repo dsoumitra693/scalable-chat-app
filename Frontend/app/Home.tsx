@@ -3,6 +3,7 @@ import { Header, Peoples } from '../components/Home'
 import { StatusBar } from 'expo-status-bar'
 import { useTheme } from 'react-native-paper'
 import { useAuth } from '../providers/AuthProvider'
+import SocketProvider from '../providers/SocketProvider'
 
 
 const Home = () => {
@@ -27,7 +28,7 @@ const Home = () => {
 
   return (
     <>
-      <StatusBar backgroundColor={colors.background} />
+      <StatusBar backgroundColor={colors.surface} />
       <Header />
       <Peoples />
     </>
