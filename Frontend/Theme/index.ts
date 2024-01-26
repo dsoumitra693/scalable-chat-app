@@ -1,9 +1,12 @@
 import { Theme } from "react-native-paper";
 
-type ThemeColors = Theme['colors']
+export type ThemeColors = Theme['colors']
+interface IThemes {
+    [key: string]: ThemeColors;
+}
 
-export const dark_purple_theme_colors: ThemeColors = {
-    primary: '#c900ff',
+const dark_purple_theme_colors: ThemeColors = {
+    primary: '#e92aff',
     background: '#000000',
     surface: '#8900ae',
     accent: '#5d0076',
@@ -13,10 +16,10 @@ export const dark_purple_theme_colors: ThemeColors = {
     disabled: '#888',
     placeholder: '#666666',
     backdrop: '#000000',  // Matching the background color
-    notification: '#c900ff'
+    notification: '#e92aff'
 }
 
-export const earth_tones_theme_colors: ThemeColors = {
+const earth_tones_theme_colors: ThemeColors = {
     primary: '#605553',
     background: '#272323',
     surface: '#332f2f',
@@ -30,7 +33,7 @@ export const earth_tones_theme_colors: ThemeColors = {
     notification: '#999595',
 };
 
-export const ocean_breeze_theme_colors: ThemeColors = {
+const ocean_breeze_theme_colors: ThemeColors = {
     primary: '#4285F4',          // Blue
     background: '#E0F7FA',       // Light Cyan
     surface: '#B3E0E6',          // Powder Blue
@@ -44,7 +47,7 @@ export const ocean_breeze_theme_colors: ThemeColors = {
     notification: '#FFD54F',     // Amber
 };
 
-export const seren_frost_theme_colors = {
+const seren_frost_theme_colors = {
     primary: '#2196F3',           // Blue
     background: '#FFFFFF',        // White
     surface: '#F5F5F5',           // Light Grey
@@ -58,7 +61,7 @@ export const seren_frost_theme_colors = {
     notification: '#FFD54F'       // Amber
 };
 
-export const cool_sunshine_theme_colors = {
+const cool_sunshine_theme_colors = {
     primary: '#F2B418',        // Sunshine
     background: '#272838',     // Blackjack
     surface: '#AFCBD5',         // Fresh Blue
@@ -70,4 +73,22 @@ export const cool_sunshine_theme_colors = {
     placeholder: '#555151',     // A lighter shade of the surface color
     backdrop: '#272323',        // Matching the background color
     notification: '#999595'     // A contrasting color for notifications
-  };
+};
+
+
+export const themes: IThemes[] = [
+    { 'Seren Frost': seren_frost_theme_colors },
+    { 'Dark Purple': dark_purple_theme_colors },
+    { 'Cool Sunshine': cool_sunshine_theme_colors },
+    { 'Earth Tones': earth_tones_theme_colors },
+    { 'Ocean Breeze': ocean_breeze_theme_colors },
+];
+
+export function getThemeColors(themeName?: string): ThemeColors {
+    const defaultTheme = themes[0]['Seren Frost']
+    
+    const foundTheme = themes.find(t => Object.keys(t)[0] === themeName);
+    return foundTheme ? foundTheme[themeName] : defaultTheme;
+}
+
+export const themesName = themes.map(t=>Object.keys(t)[0])

@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Frontend",
+    "\\Frontend\\app"
   ],
+  "SelectedNode": "\\Frontend\\app\\index.tsx",
   "PreviewInSolutionExplorer": false
 }

@@ -20,8 +20,8 @@ const OtpScreen = () => {
 
   const handleOtpSubmit = async () => {
     console.log(userId)
-    // let res = await verifyOtp(userId as string, OTP)
-    let res = 'response'
+    let res = await verifyOtp(userId as string, OTP)
+    // let res = 'response'
     let nextScreenUrl: Href<string> = '/'
 
     if (!!res) {

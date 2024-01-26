@@ -1,19 +1,32 @@
 import { StatusBar, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
-import { Button, Divider, IconButton, Menu, Searchbar, useTheme } from 'react-native-paper'
+import React from 'react'
+import { useTheme } from 'react-native-paper'
 import { useAuth } from '../../providers/AuthProvider'
+import { useRouter } from 'expo-router'
+import Menu from '../Menu'
+import { IMenuItem } from '../../Types'
+import SearchBar from '../SearchBar'
 
 
 const statusbarHeight = StatusBar.currentHeight
 const Header = () => {
   const { colors } = useTheme()
-  const [visible, setVisible] = useState(false)
   const { currentUser, logoutUser } = useAuth()
-  const [searchQuery, setSearchQuery] = useState('')
+  const router = useRouter()
 
-  const openMenu = () => setVisible(true)
-  const closeMenu = () => setVisible(false)
-  const onChangeSearch = (query: string) => setSearchQuery(query)
+  const menuItem:IMenuItem[] = [
+    {
+      title: "Logout",
+      iconName:"logout",
+      callback: logoutUser
+    },
+    {
+      title:"Settings",
+      iconName:"cog-outline",
+      callback: ()=> router.push("/Settings/")
+    }
+  ] 
+
 
   return (
     <View style={[styles.header, { backgroundColor: colors.surface }]}>
@@ -26,20 +39,9 @@ const Header = () => {
       }}>
         <Text style={[styles.headerText, { color: colors.text }]}>Hello! {currentUser.name}</Text>
 
-        <Menu
-          visible={visible}
-          onDismiss={closeMenu}
-          contentStyle={{ backgroundColor: colors.background, borderRadius:10, top:30 }}
-          anchor={<IconButton icon="menu" color={colors.primary} size={25} onPress={openMenu} />}>
-          <Menu.Item onPress={logoutUser} title="Logout" icon={'logout'} />
-        </Menu>
+        <Menu menuItems={menuItem}/>
       </View>
-      <Searchbar
-        placeholder="Find People"
-        onChangeText={onChangeSearch}
-        value={searchQuery}
-        style={{width:'95%', borderRadius:20}}
-      />
+      <SearchBar placeholder="Find People" searchCallback={(query)=>console.log(query)}/>
     </View>)
 }
 
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'transparent',
     top: statusbarHeight,
-    paddingBottom:35
+    paddingBottom: 35
   },
   headerText: {
     fontSize: 25,
