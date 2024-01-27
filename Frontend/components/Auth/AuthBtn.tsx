@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Text } from 'react-native-paper'
+import { TouchableRipple, Text, useTheme } from 'react-native-paper'
 import { StyleProp, ViewStyle } from 'react-native';
 
 interface AuthBtnProps {
@@ -10,7 +10,9 @@ interface AuthBtnProps {
 }
 
 const AuthBtn: React.FC<AuthBtnProps> = ({ text, style, onPress, disabled }) => {
-  return (<Button mode="contained"
+  console.log(disabled)
+  const { colors } = useTheme()
+  return (<TouchableRipple
     style={[{
       bottom: 100,
       position: 'absolute',
@@ -18,12 +20,13 @@ const AuthBtn: React.FC<AuthBtnProps> = ({ text, style, onPress, disabled }) => 
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 10,
-      padding: 10,
+      padding: 20,
+      backgroundColor: disabled ? colors.disabled : colors.primary
     }, style]}
     disabled={disabled}
     onPress={onPress}>
-    <Text style={{ fontSize: 18, fontWeight: '200' }}>{text}</Text>
-  </Button>
+    <Text style={{ fontSize: 20, fontWeight: '200', color: disabled ? colors.placeholder : colors.text }}>{text}</Text>
+  </TouchableRipple>
   )
 }
 
