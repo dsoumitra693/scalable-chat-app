@@ -29,6 +29,7 @@ const NameScreen = () => {
     return (
         <AuthLayout>
             <TextInput
+                autoFocus
                 keyboardType='name-phone-pad'
                 mode='outlined'
                 maxLength={128}

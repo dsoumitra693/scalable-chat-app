@@ -40,6 +40,7 @@ const OtpScreen = () => {
   return (
     <AuthLayout>
       <TextInput
+        autoFocus
         keyboardType='phone-pad'
         mode='outlined'
         maxLength={6}

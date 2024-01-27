@@ -10,7 +10,6 @@ interface AuthBtnProps {
 }
 
 const AuthBtn: React.FC<AuthBtnProps> = ({ text, style, onPress, disabled }) => {
-  console.log(disabled)
   const { colors } = useTheme()
   return (<TouchableRipple
     style={[{
