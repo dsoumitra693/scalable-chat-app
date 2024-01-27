@@ -1,7 +1,7 @@
 import { View } from 'react-native'
 import React from 'react'
 import SettingsLayout from './SettingsLayout'
-import { Header } from '../../components/Settings'
+import Header from '../../components/Header'
 import { useTheme } from 'react-native-paper'
 import { themesName } from '../../Theme'
 import ThemeSection from './ThemeSection'

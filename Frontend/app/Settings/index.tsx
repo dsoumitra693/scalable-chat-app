@@ -1,11 +1,12 @@
 import React from 'react'
 import SettingsLayout from './SettingsLayout'
-import { Header, Main } from '../../components/Settings'
+import { Main } from '../../components/Settings'
+import Header from '../../components/Header'
 
 const Settings = () => {
     return (
         <SettingsLayout>
-            <Header title='Setttings'/>
+            <Header title='Setttings' />
             <Main />
         </SettingsLayout>
     )

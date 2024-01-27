@@ -18,6 +18,7 @@ const Header:React.FC<HeaderProps> = ({title}) => {
         <Appbar.Header>
             <Appbar.BackAction onPress={_goBack} />
             <Appbar.Content title={title} />
+            <Appbar.Action icon={'magnify'} />
         </Appbar.Header>
     )
 }
