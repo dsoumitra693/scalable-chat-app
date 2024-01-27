@@ -1,0 +1,1 @@
+export { default as ContactFeed } from './ContactFeed'

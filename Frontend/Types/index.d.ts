@@ -21,3 +21,11 @@ export interface IMenuItem {
   iconName: string;
   callback: (p?: any) => any
 }
+
+export interface IContacts { 
+  id: string; 
+  name: string, 
+  phoneNumber: string, 
+  isOnFastChat: boolean,
+  avatarImg?:string
+}

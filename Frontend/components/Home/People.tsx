@@ -1,8 +1,9 @@
 import { Text, View } from 'react-native'
 import React from 'react'
-import { Avatar, Badge, List, useTheme } from 'react-native-paper'
+import { Badge, List, useTheme } from 'react-native-paper'
 import { formateText } from '../../utils/textFormate';
 import { useRouter } from 'expo-router';
+import Avatar from '../Avatar';
 
 interface IPeople {
     name: string;
@@ -23,10 +24,7 @@ const People = (props: IPeople) => {
             description={formateText(props.lastMsg, MAX_MSG_LENGTH)}
             left={() => (
                 <View style={{ position: 'relative' }}>
-                    <Avatar.Image
-                        size={40}
-                        source={{ uri: props.avatar }}
-                        style={{ backgroundColor: props.bgColor }} />
+                    <Avatar uri={props.avatar} bgColor={props.bgColor}/>
                     <Badge size={10} style={{
                         backgroundColor: theme.colors.accent,
                         position: 'absolute',

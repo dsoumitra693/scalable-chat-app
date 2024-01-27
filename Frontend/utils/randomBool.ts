@@ -1,0 +1,1 @@
+export const random_bool = () => (Math.random() < 0.5)
