@@ -17,7 +17,7 @@ export const ThemeSection: React.FC<ThemeSectionProps> = ({ colorName }) => {
     }
 
     return (
-        <View style={{ alignItems: 'center', }}>
+        <View style={{ alignItems: 'center', marginBottom:20}}>
             <View style={{
                 borderRadius: 10,
                 borderWidth: currentTheme == colorName ? 5 : 0,
