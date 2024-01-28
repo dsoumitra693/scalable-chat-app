@@ -12,15 +12,12 @@ const PhoneScreen = () => {
   const router = useRouter()
   const { requestOtp } = useAuth()
 
-
-  
-
   useEffect(() => {
     setIsdisabled(phone?.length < 10)
   }, [phone])
 
   const handlePhoneSubmit = async () => {
-    let userId = await requestOtp(`91${phone}`)
+    let userId = await requestOtp(phone)
     // let userId = ''
     console.log(userId)
     router.push({ pathname: `/Auth/OtpScreen`, params: { userId, phone } })

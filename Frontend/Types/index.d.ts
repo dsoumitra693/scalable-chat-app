@@ -12,7 +12,7 @@ export interface IUser {
   userId: string;
   name: string;
   phone: string;
-  countrycode: string;
+  countrycode?: string;
   jwt?: string;
 }
 

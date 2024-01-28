@@ -1,0 +1,1 @@
+export const serverUrl = 'https://scalable-fast-chat-server.onrender.com'

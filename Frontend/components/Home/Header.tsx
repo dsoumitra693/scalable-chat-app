@@ -6,26 +6,33 @@ import { useRouter } from 'expo-router'
 import Menu from '../Menu'
 import { IMenuItem } from '../../Types'
 import SearchBar from '../SearchBar'
+import useUser from '../../hooks/useUser'
 
 
 const statusbarHeight = StatusBar.currentHeight
 const Header = () => {
   const { colors } = useTheme()
   const { currentUser, logoutUser } = useAuth()
+  const { searchUser } = useUser()
   const router = useRouter()
 
-  const menuItem:IMenuItem[] = [
+  const menuItem: IMenuItem[] = [
     {
       title: "Logout",
-      iconName:"logout",
+      iconName: "logout",
       callback: logoutUser
     },
     {
-      title:"Settings",
-      iconName:"cog-outline",
-      callback: ()=> router.push("/Settings/")
+      title: "Settings",
+      iconName: "cog-outline",
+      callback: () => router.push("/Settings/")
     }
-  ] 
+  ]
+
+  const handleOnSearchSubmit = async (query: string) => {
+    let user = await searchUser(["+91"+query])
+    console.log(user)
+  }
 
 
   return (
@@ -39,9 +46,11 @@ const Header = () => {
       }}>
         <Text style={[styles.headerText, { color: colors.text }]}>Hello! {currentUser.name}</Text>
 
-        <Menu menuItems={menuItem}/>
+        <Menu menuItems={menuItem} />
       </View>
-      <SearchBar placeholder="Find People" searchCallback={(query)=>console.log(query)}/>
+      <SearchBar
+        placeholder="Find People"
+        searchCallback={handleOnSearchSubmit} />
     </View>)
 }
 
