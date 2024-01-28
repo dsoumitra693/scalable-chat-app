@@ -4,10 +4,10 @@ import { Avatar as AvatarBase } from 'react-native-paper'
 
 interface AvatarProps {
     bgColor: ColorValue;
-    uri: string;
+    uri?: string;
 }
 
-const Avatar = ({ bgColor, uri }) => {
+const Avatar = ({ bgColor, uri }:AvatarProps) => {
     return (
         <AvatarBase.Image
             size={40}

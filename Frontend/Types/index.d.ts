@@ -9,7 +9,7 @@ export interface IMessage {
 }
 
 export interface IUser {
-  userId: string;
+  id: string;
   name: string;
   phone: string;
   countrycode?: string;
