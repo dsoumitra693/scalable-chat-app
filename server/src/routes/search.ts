@@ -3,6 +3,6 @@ import { searchUsers } from "../controllers/search"
 
 const searchRouter = express.Router({ mergeParams: true, })
 
-searchRouter.get('/', searchUsers)
+searchRouter.post('/', searchUsers)
 
 export default searchRouter

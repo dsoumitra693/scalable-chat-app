@@ -9,6 +9,8 @@ export const searchUsers = asyncErrorHandler(
         let _usersResponse = await appwriteUsers.list([], Query.equal(
             'phone', searchQuery
         ))
+
+        
         let users = _usersResponse.users.map(u => ({
             id: u.$id,
             name: u.name,
