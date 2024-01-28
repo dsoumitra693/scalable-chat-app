@@ -18,19 +18,19 @@ const Header = () => {
 
   const menuItem: IMenuItem[] = [
     {
-      title: "Logout",
-      iconName: "logout",
-      callback: logoutUser
-    },
-    {
       title: "Settings",
       iconName: "cog-outline",
       callback: () => router.push("/Settings/")
+    },
+    {
+      title: "Logout",
+      iconName: "logout",
+      callback: logoutUser
     }
   ]
 
   const handleOnSearchSubmit = async (query: string) => {
-    let user = await searchUser(["+91"+query])
+    let user = await searchUser(["+91" + query])
     console.log(user)
   }
 

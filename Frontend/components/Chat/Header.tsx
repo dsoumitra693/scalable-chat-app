@@ -10,6 +10,8 @@ const Header = () => {
     <Appbar.Header style={{backgroundColor:colors.surface, paddingRight:10}}>
       <Appbar.BackAction onPress={()=>router.back()}/>
       <Appbar.Content title={'Soumo'} />
+      <Appbar.Action icon="phone-plus"/>
+      <Appbar.Action icon="video-plus"/>
       <View style={{ position: 'relative', justifyContent: 'center', alignItems: 'center' }}>
         <Avatar.Image
           size={30}
