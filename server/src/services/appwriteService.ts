@@ -1,4 +1,5 @@
-import { Client, Users } from 'node-appwrite'
+import { Client, Users, Account } from 'node-appwrite'
+import { IUser } from '../Types/User';
 
 // Init SDK
 const client = new Client();
@@ -11,4 +12,13 @@ client
 
 const appwriteUsers = new Users(client);
 
-export { appwriteUsers }
+const getAccount = async (jwt: string): Promise<IUser> => {
+    client.setJWT(jwt)
+    let account = new Account(client)
+
+    let res = await account.get()
+
+    return res
+}
+
+export { appwriteUsers, getAccount }

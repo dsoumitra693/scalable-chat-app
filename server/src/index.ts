@@ -29,7 +29,7 @@ async function init() {
     console.log(`Listening on port ${port}`);
   });
 
-  socketService.initListner()
+  socketService.initListener()
   console.log(listendpoint(app))
 }
 
