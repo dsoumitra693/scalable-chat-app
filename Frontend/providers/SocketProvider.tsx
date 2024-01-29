@@ -1,8 +1,10 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { IMessage } from '../Types';
 import { io, Socket } from 'socket.io-client';
+import { serverUrl } from '../constants';
+import { useAuth } from './AuthProvider';
 
-const SERVER_URL = "https://scalable-fast-chat-server.onrender.com"
+const SERVER_URL = serverUrl
 
 interface SocketProviderProps {
     children?: React.ReactNode;
@@ -25,6 +27,7 @@ export const useSocket = () => {
 const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
     const [socket, setSocket] = useState<Socket>()
+    const { currentUser } = useAuth()
 
     const sendMessage: ISocketContext['sendMessage'] = useCallback(
         (msg: IMessage) => {
@@ -41,6 +44,9 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         try {
             console.log('Try to connect socket')
             _socket = io(SERVER_URL, {
+                query: {
+                    token: currentUser?.jwt
+                },
                 reconnection: true,
             });
 
