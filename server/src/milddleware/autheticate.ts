@@ -4,7 +4,7 @@ import { getAccount } from "../services/appwriteService";
 export const authenticate = async (socket: Socket, next: (err?: Error) => void) => {
     try {
         const token = socket.handshake.query.token as string;
-        const user = await getAccount(token);
+        const user = await getAccount('token');
 
         if (user) {
             socket.handshake.auth = {
