@@ -4,12 +4,12 @@ import { IconButton, useTheme } from 'react-native-paper'
 import { useSocket } from '../../providers/SocketProvider'
 import { IMessage } from '../../Types'
 
-const SendMsg = ({ msges, setMsges }) => {
+const SendMsg = ({ msges, setMsges, phone }) => {
     const { colors } = useTheme()
     const [msg, setMsg] = useState('')
 
     const { sendMessage } = useSocket()
-    
+
     const handleMsgSent = (): void => {
         let newText = msg.trim()
         if (newText.length > 0) {

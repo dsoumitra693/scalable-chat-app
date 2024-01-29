@@ -15,7 +15,7 @@ const MAX_MSG_LENGTH = 40
 const People = (props: IPeople) => {
     const theme = useTheme()
     const router = useRouter()
-    const navigateToChat = () => router.push(`/Chat/${props.name}`)
+    const navigateToChat = () => router.push('/Chat/')
     return (
         <List.Item
             onPress={navigateToChat}

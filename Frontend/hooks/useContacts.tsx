@@ -47,11 +47,6 @@ const useContacts = () => {
                     const updatedContacts: IContacts[] = filteredContacts.map(contact => {
                         const matchedUser = users.find(u => u.phone === contact.phoneNumber);
 
-                        console.log({
-                            ...contact,
-                            id: matchedUser ? matchedUser.id : contact.id,
-                            isOnFastChat: !!matchedUser,
-                        })
                         return {
                             ...contact,
                             id: matchedUser ? matchedUser.id : contact.id,
