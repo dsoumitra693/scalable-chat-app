@@ -1,23 +1,25 @@
 import { useEffect, useState } from 'react';
 import * as Contacts from 'expo-contacts';
-import { IContacts } from '../Types';
+import { IContacts, IUser } from '../Types';
 import useUser from './useUser';
 
-const defaultAvatarImg = 'https://static.vecteezy.com/system/resources/thumbnails/020/911/740/small/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png';
+const defaultAvatarImg =
+    'https://static.vecteezy.com/system/resources/thumbnails/020/911/740/small/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png';
 
 const useContacts = () => {
-    const [contacts, setContacts] = useState<IContacts[] | undefined>(undefined);
+    const [contacts, setContacts] = useState<IContacts[] | []>([]);
     const { searchUser } = useUser();
+    const [contactsCache, setContactsCache] = useState(new Map<string, IContacts>());
+    const [usersCache, setUsersCache] = useState(new Map<string, IUser>());
 
-    const mapToIContacts = (contact: Contacts.Contact): IContacts => {
-        const phoneNumber = /^(\+91|91)/.test(contact?.phoneNumbers[0]?.number)
-            ? contact?.phoneNumbers[0]?.number
-            : `+91${contact?.phoneNumbers[0]?.number}`;
+    const mapToIContacts = (contact) => {
+        const phoneNumber =
+            /^(\+91|91)/.test(contact?.phoneNumbers?.[0]?.number) ? contact.phoneNumbers[0].number : `+91${contact.phoneNumbers?.[0]?.number}`;
 
         return {
-            id: contact?.id ?? '',
-            name: contact?.name ?? '',
-            phoneNumber: phoneNumber.replaceAll(" ", ''),
+            id: contact?.id || '',
+            name: contact?.name || '',
+            phoneNumber: phoneNumber.replaceAll(' ', ''),
             isOnFastChat: false,
             avatarImg: contact.imageAvailable ? contact.image.uri : defaultAvatarImg,
         };
@@ -36,28 +38,47 @@ const useContacts = () => {
                     ],
                 });
 
-                if (data.length > 0) {
-                    const filteredContacts: IContacts[] = data
-                        .filter(contact => contact?.phoneNumbers?.length > 0)
-                        .map(mapToIContacts);
+                const filteredContacts = data
+                    .filter((contact) => contact?.phoneNumbers?.length > 0)
+                    .map(mapToIContacts);
 
-                    const phoneNumbers = filteredContacts.map(contact => contact.phoneNumber.replace(/ /g, ''));
-                    const users = await searchUser(phoneNumbers);
+                const phoneNumbers = filteredContacts.map((contact) => contact.phoneNumber);
+                const cachedContacts = phoneNumbers.map((phoneNumber) => contactsCache.get(phoneNumber)).filter(Boolean);
+                const cachedUsers = phoneNumbers.map((phoneNumber) => usersCache.get(phoneNumber)).filter(Boolean);
 
-                    const updatedContacts: IContacts[] = filteredContacts.map(contact => {
-                        const matchedUser = users.find(u => u.phone === contact.phoneNumber);
+                // Get non-cached users
+                const nonCachedPhoneNumbers = phoneNumbers.filter(
+                    (phoneNumber) => !contactsCache.has(phoneNumber) || !usersCache.has(phoneNumber)
+                );
+                const users = await searchUser(nonCachedPhoneNumbers);
 
-                        return {
-                            ...contact,
-                            id: matchedUser ? matchedUser.id : contact.id,
-                            isOnFastChat: !!matchedUser,
-                        };
-                    });
+                // Update caches
+                const newUsersCache = new Map(usersCache);
+                users.forEach((user, index) => {
+                    newUsersCache.set(nonCachedPhoneNumbers[index], user);
+                });
+                setUsersCache(newUsersCache);
 
-                    setContacts(updatedContacts);
-                } else {
-                    setContacts([]);
-                }
+                const newContactsCache = new Map(contactsCache);
+                filteredContacts.forEach((contact) => {
+                    newContactsCache.set(contact.phoneNumber, contact);
+                });
+                setContactsCache(newContactsCache);
+
+                const updatedContacts = filteredContacts.map((contact) => {
+                    const matchedContact = cachedContacts.find((c) => c.phoneNumber === contact.phoneNumber) || contact;
+                    const matchedUser = cachedUsers.find((u) => u.phone === contact.phoneNumber);
+
+                    return {
+                        ...matchedContact,
+                        id: matchedUser ? matchedUser.id : matchedContact.id,
+                        isOnFastChat: !!matchedUser,
+                    };
+                });
+
+                setContacts(updatedContacts);
+            } else {
+                setContacts([]);
             }
         } catch (error) {
             console.error('Error fetching contacts:', error);
@@ -67,7 +88,7 @@ const useContacts = () => {
 
     useEffect(() => {
         getContacts();
-    }, []);
+    }, [contactsCache, usersCache]);
 
     return contacts;
 };
