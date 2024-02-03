@@ -32,14 +32,17 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     const sendMessage: ISocketContext['sendMessage'] = useCallback(
         (msg: IMessage) => {
             console.log('Send Message ', msg.content);
-            if (socket)
-                socket.emit('event:message', msg)
+            if (socket){
+                console.log(msg)
+                socket.emit('private:message', msg)
+            }
         },
         [socket]);
 
 
 
     useEffect(() => {
+        console.log(currentUser.jwt)
         let _socket: Socket;
         try {
             console.log('Try to connect socket')
@@ -59,6 +62,13 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
                 console.error('Socket connection error:', error);
                 // Handle error as needed
             });
+
+            _socket.on('private:message', (msg) => {
+               console.log(msg)
+            });
+            _socket.on('offline:message', (msg) => {
+                console.log(msg)
+             });
 
             setSocket(_socket)
 

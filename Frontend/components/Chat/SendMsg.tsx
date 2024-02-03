@@ -3,11 +3,12 @@ import React, { useState } from 'react'
 import { IconButton, useTheme } from 'react-native-paper'
 import { useSocket } from '../../providers/SocketProvider'
 import { IMessage } from '../../Types'
+import { useAuth } from '../../providers/AuthProvider'
 
 const SendMsg = ({ msges, setMsges, phone }) => {
     const { colors } = useTheme()
     const [msg, setMsg] = useState('')
-
+    const { currentUser } = useAuth()
     const { sendMessage } = useSocket()
 
     const handleMsgSent = (): void => {
@@ -17,8 +18,8 @@ const SendMsg = ({ msges, setMsges, phone }) => {
             let newMsg: IMessage = {
                 content: newText,
                 timestamp: '12:00',
-                sender: 'Soumo',
-                reciver: '',
+                sender: currentUser.countrycode + currentUser.phone,
+                reciver: phone,
                 status: 'read'
             }
             sendMessage(newMsg)
