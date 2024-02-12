@@ -35,16 +35,16 @@ export const useAuth = () => {
 const AuthContext = React.createContext<IAuthContext | null>(null);
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const { storeSession, retriveSession, removeSession } = useStorage()
+    const { storeSession, retriveSession, removeSession } = useStorage<IUser>(SESSION_NAME)
     const [currentUser, setCurrentUser] = useState<IUser | null | undefined>();
 
     const setActiveCurrentUser = (user: IUser) => {
         setCurrentUser(user);
-        storeSession<IUser>(SESSION_NAME, user)
+        storeSession(user)
     }
 
     const logoutUser = () => {
-        removeSession(SESSION_NAME)
+        removeSession()
         setCurrentUser(undefined)
     }
 
@@ -84,7 +84,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
     useEffect(() => {
         const retriveData = async () => {
-            let data = await retriveSession<IUser>(SESSION_NAME)
+            let data = await retriveSession()
             setCurrentUser(data)
         }
 

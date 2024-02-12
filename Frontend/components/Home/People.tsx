@@ -4,13 +4,8 @@ import { Badge, List, useTheme } from 'react-native-paper'
 import { formateText } from '../../utils/textFormate';
 import { useRouter } from 'expo-router';
 import Avatar from '../Avatar';
+import { IPeople } from '../../Types';
 
-interface IPeople {
-    name: string;
-    avatar: string;
-    lastMsg: string;
-    bgColor: string;
-}
 const MAX_MSG_LENGTH = 40
 const People = (props: IPeople) => {
     const theme = useTheme()
@@ -21,10 +16,10 @@ const People = (props: IPeople) => {
             onPress={navigateToChat}
             title={props.name}
             style={{ padding: 10, paddingHorizontal:15, height: 70,backgroundColor: theme.colors.background }}
-            description={formateText(props.lastMsg, MAX_MSG_LENGTH)}
+            description={formateText(props.lastmsg.content, MAX_MSG_LENGTH)}
             left={() => (
                 <View style={{ position: 'relative' }}>
-                    <Avatar uri={props.avatar} bgColor={props.bgColor}/>
+                    <Avatar uri={props.avatar}/>
                     <Badge size={10} style={{
                         backgroundColor: theme.colors.accent,
                         position: 'absolute',

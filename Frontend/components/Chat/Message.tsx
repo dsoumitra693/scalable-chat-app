@@ -17,7 +17,7 @@ const Message = ({ content, sender, reciver, status, timestamp }: IMessage) => {
     <View style={[containerStyle, styles.messageContentContainer]}>
       <Text style={[styles.messageText, { color: theme.colors.text }]}>{content}</Text>
       <View style={styles.timestampContainer}>
-        <Text style={[styles.timestampText, { color: theme.colors.disabled }]}>{timestamp}</Text>
+        <Text style={[styles.timestampText, { color: theme.colors.disabled }]}>{timestamp.toTimeString()}</Text>
         <MsgStatusIcon status={status} />
       </View>
     </View>

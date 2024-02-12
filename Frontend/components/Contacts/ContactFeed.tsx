@@ -32,8 +32,8 @@ const ContactFeed = () => {
                 {(contacts?.length > 0 && contacts) ? (
                     contacts
                         .filter(c => c.isOnFastChat)
-                        .map((contact) => (<ContactItem
-                            key={contact.id}
+                        .map((contact, idx) => (<ContactItem
+                            key={contact.phoneNumber + contact.id +idx}
                             contact={contact}
                             onPress={() => goToChat(contact)} />)
                         )) : null}
@@ -43,8 +43,8 @@ const ContactFeed = () => {
                 {(contacts?.length > 0 && contacts) ? (
                     contacts
                         .filter(c => !c.isOnFastChat)
-                        .map((contact) => <ContactItem
-                            key={contact.id}
+                        .map((contact, idx) => <ContactItem
+                        key={contact.phoneNumber + contact.id +idx}
                             contact={contact}
                             right={() => (
                                 <TouchableRipple style={{

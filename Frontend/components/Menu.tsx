@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { IconButton, Menu as MenuBase, useTheme } from "react-native-paper";
-import { IMenuItem } from "../../Types";
+import { IMenuItem } from "../Types";
+
 
 
 interface MenuProps {

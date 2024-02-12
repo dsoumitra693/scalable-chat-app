@@ -3,6 +3,7 @@ import { IMessage } from '../Types';
 import { io, Socket } from 'socket.io-client';
 import { serverUrl } from '../constants';
 import { useAuth } from './AuthProvider';
+import { usePeoples } from './PeopleProvider';
 
 const SERVER_URL = serverUrl
 
@@ -28,12 +29,13 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
     const [socket, setSocket] = useState<Socket>()
     const { currentUser } = useAuth()
+    let { storeMsg } = usePeoples()
 
     const sendMessage: ISocketContext['sendMessage'] = useCallback(
         (msg: IMessage) => {
             console.log('Send Message ', msg.content);
-            if (socket){
-                console.log(msg)
+            if (socket) {
+                storeMsg(msg)
                 socket.emit('private:message', msg)
             }
         },
@@ -42,7 +44,7 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
 
     useEffect(() => {
-        console.log(currentUser.jwt)
+        if (!currentUser?.jwt) return
         let _socket: Socket;
         try {
             console.log('Try to connect socket')
@@ -64,11 +66,11 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
             });
 
             _socket.on('private:message', (msg) => {
-               console.log(msg)
+                storeMsg(msg)
             });
             _socket.on('offline:message', (msg) => {
-                console.log(msg)
-             });
+                storeMsg(msg)
+            });
 
             setSocket(_socket)
 

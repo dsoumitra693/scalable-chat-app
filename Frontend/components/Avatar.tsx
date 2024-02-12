@@ -3,7 +3,7 @@ import { ColorValue } from 'react-native';
 import { Avatar as AvatarBase } from 'react-native-paper'
 
 interface AvatarProps {
-    bgColor: ColorValue;
+    bgColor?: ColorValue;
     uri?: string;
 }
 

@@ -17,7 +17,7 @@ const SendMsg = ({ msges, setMsges, phone }) => {
             setMsg('')
             let newMsg: IMessage = {
                 content: newText,
-                timestamp: '12:00',
+                timestamp: new Date(),
                 sender: currentUser.countrycode + currentUser.phone,
                 reciver: phone,
                 status: 'read'

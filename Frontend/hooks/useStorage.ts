@@ -1,15 +1,14 @@
-import React from 'react'
 import * as SecureStore from 'expo-secure-store';
 
-interface useStorageReturnType {
-    storeSession: <T>(session_name: string, data: T) => void;
-    retriveSession: <T>(session_name: string) => Promise<T>;
-    removeSession: (session_name: string) => void;
+interface useStorageReturnType<T> {
+    storeSession: (data: T) => void;
+    retriveSession: () => Promise<T>;
+    removeSession: () => void;
 }
 
-export const useStorage = (): useStorageReturnType => {
+export const useStorage = <T>(session_name: string): useStorageReturnType<T> => {
 
-    const storeSession = async <T>(session_name: string, data: T) => {
+    const storeSession = async <T>(data: T) => {
         try {
             await SecureStore.setItemAsync(
                 session_name,
@@ -19,7 +18,7 @@ export const useStorage = (): useStorageReturnType => {
             throw new Error(error)
         }
     };
-    const retriveSession = async <T>(session_name: string): Promise<T | null> => {
+    const retriveSession = async <T>(): Promise<T | null> => {
         try {
             const session = await SecureStore.getItemAsync(session_name);
 
@@ -32,9 +31,9 @@ export const useStorage = (): useStorageReturnType => {
             throw new Error(error)
         }
     };
-    const removeSession = async (session_name: string) => {
+    const removeSession = async () => {
         try {
-            await SecureStore.deleteItemAsync(session_name, );
+            await SecureStore.deleteItemAsync(session_name);
         } catch (error) {
             throw new Error(error)
         }

@@ -1,19 +1,20 @@
 import React from 'react'
 import { Stack } from 'expo-router'
 import RootLayout from './RootLayout'
-import AuthProvider from '../providers/AuthProvider'
-import SocketProvider from '../providers/SocketProvider'
+import {AuthProvider, SocketProvider,PeopleProvider} from '../providers'
 
 const StackLayout = () => {
   return (
     <AuthProvider>
-      <SocketProvider>
-        <RootLayout>
-          <Stack screenOptions={{
-            headerShown: false
-          }} />
-        </RootLayout>
-      </SocketProvider>
+      <PeopleProvider>
+        <SocketProvider>
+          <RootLayout>
+            <Stack screenOptions={{
+              headerShown: false
+            }} />
+          </RootLayout>
+        </SocketProvider>
+      </PeopleProvider>
     </AuthProvider>
   )
 }

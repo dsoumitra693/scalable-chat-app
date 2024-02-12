@@ -9,11 +9,12 @@ interface useUserReturnType {
 const useUser = (): useUserReturnType => {
     const searchUser = async (phoneNumbers: string[]) => {
 
+        console.log(phoneNumbers)
         let response = await axios.request({
             url: `${serverUrl}/search`,
             method: "POST",
             data: { users: phoneNumbers },
-        });
+        })
 
         return response.data.users as IUser[]
     }

@@ -1,11 +1,13 @@
 import { AppwriteException } from "appwrite";
 
+type MsgStatus = 'read' | 'sent' | 'received';
+
 export interface IMessage {
   content: string;
   sender: string;
   reciver: string
-  status: string | 'read' | 'sent' | 'received';
-  timestamp: string;
+  status: MsgStatus
+  timestamp: Date;
 }
 
 export interface IUser {
@@ -22,10 +24,23 @@ export interface IMenuItem {
   callback: (p?: any) => any
 }
 
-export interface IContacts { 
-  id: string; 
-  name: string, 
-  phoneNumber: string, 
+export interface IContacts {
+  id: string;
+  name: string,
+  phoneNumber: string,
   isOnFastChat: boolean,
-  avatarImg?:string
+  avatarImg?: string
+}
+
+
+export interface IPeople {
+  name: string;
+  phone: string;
+  avatar:string;
+  msges: IMessage[]
+  lastmsg: {
+    content: string;
+    timeStamp: Date;
+  };
+  unreadMsgCount: number;
 }
