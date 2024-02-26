@@ -18,7 +18,7 @@ const NameScreen = () => {
     }, [name])
 
     const handleNameSubmit = async () => {
-        console.log(currentUser.userId)
+        console.log(currentUser.id)
         updateName(name)
         setActiveCurrentUser({
             ...currentUser,

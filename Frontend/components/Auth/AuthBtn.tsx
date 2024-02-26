@@ -24,7 +24,7 @@ const AuthBtn: React.FC<AuthBtnProps> = ({ text, style, onPress, disabled }) => 
     }, style]}
     disabled={disabled}
     onPress={onPress}>
-    <Text style={{ fontSize: 20, fontWeight: '200', color: disabled ? colors.placeholder : colors.text }}>{text}</Text>
+    <Text style={{ fontSize: 20, fontWeight: '200', color: disabled ? colors.placeholder : colors.background }}>{text}</Text>
   </TouchableRipple>
   )
 }

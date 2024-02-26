@@ -18,14 +18,13 @@ const PhoneScreen = () => {
 
   const handlePhoneSubmit = async () => {
     let userId = await requestOtp(phone)
-    // let userId = ''
-    console.log(userId)
     router.push({ pathname: `/Auth/OtpScreen`, params: { userId, phone } })
   }
 
   return (
     <AuthLayout>
       <TextInput
+        autoFocus
         keyboardType='phone-pad'
         mode='outlined'
         maxLength={10}
