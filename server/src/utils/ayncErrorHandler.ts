@@ -9,7 +9,7 @@ export const asyncErrorHandler = (
             let statusCode = 400
             let message =
                 error instanceof Error ? error.message : "Server error"
-
+                console.log(message)
             return next(createHttpError(statusCode, message))
         })
     }
