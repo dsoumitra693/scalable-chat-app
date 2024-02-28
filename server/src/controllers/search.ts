@@ -3,7 +3,7 @@ import { asyncErrorHandler } from "../utils/ayncErrorHandler";
 import { appwriteUsers } from "../services/appwriteService";
 import { Query } from "node-appwrite";
 
-export const searchUsers = //asyncErrorHandler(
+export const searchUsers = asyncErrorHandler(
     async (req: Request, res: Response, next: NextFunction) => {
         let phoneNums = req.body.users
 
@@ -21,7 +21,6 @@ export const searchUsers = //asyncErrorHandler(
         const responses = await Promise.all(queryArr.map(async (query) => {
             return await appwriteUsers.list([], query);
         }));
-        (responses)
 
 
         let validResponses = responses?.filter(res => res.total > 0);
@@ -32,7 +31,6 @@ export const searchUsers = //asyncErrorHandler(
                 phone: u.phone
             })) ?? []
         )
-        console.log(users)
+
         return res.status(200).send({ users })
-    }
-// )
+    })
