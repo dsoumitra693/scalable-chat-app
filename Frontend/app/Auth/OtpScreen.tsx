@@ -5,6 +5,7 @@ import { Href, useLocalSearchParams, useRouter } from 'expo-router'
 import { useAuth } from '../../providers/AuthProvider'
 import { AuthBtn } from '../../components/Auth'
 import { NativeSyntheticEvent, TextInputKeyPressEventData, View } from 'react-native'
+import { OtpView } from './OtpView'
 
 const OtpScreen = () => {
   const { colors } = useTheme()
@@ -16,14 +17,12 @@ const OtpScreen = () => {
   const { verifyOtp } = useAuth()
 
   useEffect(() => {
-    console.log(OTP)
-    setIsdisabled(OTP?.length < 6)
+    setIsdisabled(OTP?.join("").length < 6)
   }, [OTP])
 
   const handleOtpSubmit = async () => {
-    console.log(userId)
-    // let res = await verifyOtp(userId as string, OTP.join(''))
-    let res = 'res'
+    let id = userId as string
+    let res = await verifyOtp(id, OTP.join(''))
     let nextScreenUrl: Href<string> = '/'
 
     if (!!res) {
@@ -41,7 +40,7 @@ const OtpScreen = () => {
   }
   return (
     <AuthLayout>
-      <OtpView otp={OTP} setOtp={setOTP} />
+      <OtpView OTP={OTP} setOTP={setOTP} />
       <Text style={{
         color: colors.backdrop
       }}>Otp has been sent to the number {" "}
@@ -60,50 +59,3 @@ const OtpScreen = () => {
 
 export default OtpScreen
 
-interface OtpViewProps {
-  otp: string[];
-  setOtp: React.Dispatch<React.SetStateAction<string[]>>
-}
-
-const OtpView: React.FC<OtpViewProps> = ({ otp, setOtp }) => {
-
- const textInputRefs = Array<typeof useRef>
-  const handleTextInput = (text: string, n: number) => {
-    console.log(text, n)
-    let _otp = otp
-    _otp[n] = text
-    setOtp(_otp)
-
-
-  }
-  const handleKeyPress = (evt: NativeSyntheticEvent<TextInputKeyPressEventData>, n: number) => {
-    if (evt.nativeEvent.key === "Backspace") {
-      let _otp = otp
-      _otp[n] = ''
-      setOtp(_otp)
-      
-    }
-  }
-  return (
-    <View style={{
-      flexDirection: 'row',
-    }}>
-      {[0, 1, 2, 3, 4, 5].map(n => (
-        <TextInput key={~~10 * Math.random()} value={otp[n] || ''}
-        ref={textInputRefs[n]}
-          mode='outlined'
-          maxLength={1}
-          style={{
-            width: 45,
-            aspectRatio: 4 / 6,
-            margin: 5,
-            textAlign: 'center'
-          }}
-          onChangeText={text => handleTextInput(text, n)}
-          onKeyPress={e => handleKeyPress(e, n)}
-          keyboardType='phone-pad'
-        />
-      ))}
-    </View >
-  )
-}

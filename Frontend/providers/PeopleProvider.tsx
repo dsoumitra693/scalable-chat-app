@@ -18,28 +18,31 @@ interface IPeopleContext {
 const PeopleContext = createContext<IPeopleContext | null>(null);
 
 const PeopleProvider: React.FC<PeopleProviderProps> = ({ children }) => {
-    const { storeSession, retriveSession } = useStorage<Map<string, IPeople | undefined>>(SESSION_NAME);
+    const { storeSession, retriveSession } = useStorage<IPeople[] | undefined>(SESSION_NAME);
     const { searchUser } = useUser()
     const getPeople = async (): Promise<IPeople[]> => {
         const peopleMap = await retriveSession();
-
-        if (!peopleMap) {
+        console.log("log from peopleMap", peopleMap)
+        if (peopleMap) {
             return [];
         }
 
-        const peoples = Array.from(peopleMap.values());
+        const peoples = peopleMap
         return peoples;
     };
 
     const storeMsg = async (msg: IMessage): Promise<void> => {
+        console.log("log from storeMsg", msg)
         let prevPeopleMap = await retriveSession();
         const sender = msg.sender;
+        console.log("log from peopleMap", prevPeopleMap)
 
-        if (!prevPeopleMap) {
-            prevPeopleMap = new Map<string, IPeople>();
+        let people: IPeople
+        if (prevPeopleMap == undefined) {
+            prevPeopleMap = []
+            people = prevPeopleMap?.find(pep => pep.phone == sender);
         }
 
-        const people = prevPeopleMap.get(sender);
         let newPeople: IPeople
         if (!!people) {
             newPeople = {
@@ -66,7 +69,7 @@ const PeopleProvider: React.FC<PeopleProviderProps> = ({ children }) => {
             }
         }
 
-        prevPeopleMap.set(sender, newPeople);
+        prevPeopleMap.push(newPeople);
         console.log(prevPeopleMap)
 
         storeSession(prevPeopleMap);

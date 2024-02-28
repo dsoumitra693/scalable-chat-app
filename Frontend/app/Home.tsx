@@ -39,9 +39,8 @@ const Home = () => {
           right: 20,
           backgroundColor: colors.primary
         }}
-        color={colors.onSurface}
         icon="message"
-        // animated
+        animated
         onPress={() => router.push('/Contact/')}
       />
     </>

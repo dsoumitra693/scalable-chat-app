@@ -5,21 +5,6 @@ interface IThemes {
     [key: string]: ThemeColors;
 }
 
-
-const seren_frost_theme_colors = {
-    primary: '#2196F3',           // Blue
-    background: '#FFFFFF',        // White
-    surface: '#F5F5F5',           // Light Grey
-    accent: '#FF4081',            // Pink
-    error: '#FF5252',             // Red
-    text: '#333333',              // Dark Grey
-    onSurface: '#333333',         // Dark Grey
-    disabled: '#B0BEC5',          // Blue Grey
-    placeholder: '#90A4AE',       // Blue Grey
-    backdrop: '#F0F0F0',          // Light Grey
-    notification: '#FFD54F'       // Amber
-};
-
 const cosmic_elegance_theme_colors = {
     primary: '#40536F',        // Deep Blue
     background: '#101421',     // Midnight Navy

@@ -2,7 +2,7 @@ import * as SecureStore from 'expo-secure-store';
 
 interface useStorageReturnType<T> {
     storeSession: (data: T) => void;
-    retriveSession: () => Promise<T>;
+    retriveSession: () => Promise<T> | undefined;
     removeSession: () => void;
 }
 
@@ -21,7 +21,7 @@ export const useStorage = <T>(session_name: string): useStorageReturnType<T> => 
     const retriveSession = async <T>(): Promise<T | null> => {
         try {
             const session = await SecureStore.getItemAsync(session_name);
-
+            console.log("log from useStorage", session)
             if (session !== undefined) {
                 return JSON.parse(session) as T
             }

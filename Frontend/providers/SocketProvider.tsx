@@ -34,8 +34,8 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     const sendMessage: ISocketContext['sendMessage'] = useCallback(
         (msg: IMessage) => {
             console.log('Send Message ', msg.content);
+            storeMsg(msg)
             if (socket) {
-                storeMsg(msg)
                 socket.emit('private:message', msg)
             }
         },

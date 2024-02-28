@@ -18,10 +18,11 @@ const Peoples = () => {
     
     const { colors } = useTheme()
     return (
-        <ScrollView style={{ flex: 1, backgroundColor: colors.background }}>
+        <ScrollView style={{ flex: 1, backgroundColor: colors.background, top:30,}}>
             {peoplesData?.length > 0 ? (<List.Section >
                 {peoplesData?.map((people, idx) => <People key={people.name + idx} {...people} />)}
-            </List.Section>) : (<View>
+            </List.Section>) : 
+            (<View style={{alignItems:'center'}}>
                 <Text>No Messages Yet!</Text>
             </View>)}
         </ScrollView>
