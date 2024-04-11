@@ -25,50 +25,76 @@ interface IAuthContext {
 }
 
 export const useAuth = () => {
-    const state = useContext(AuthContext);
+    // Custom hook to access the authentication context
+    // Returns the authentication context state or a default state if AuthContext is not provided
+    try {
+        const state = useContext(AuthContext);
 
-    if (!state) throw new Error('useAuth: State is not defined');
+        if (!state) {
+            // Return default state here
+            return { currentUser: null, setActiveCurrentUser: () => {}, requestOtp: () => Promise.resolve(''), verifyOtp: () => Promise.resolve({}), updateName: () => {}, logoutUser: () => {}, createJWT: () => Promise.resolve('') };
+        }
 
-    return state;
+        return state;
+    } catch (error) {
+        console.error(error);
+        // handle the error gracefully, e.g. show an error message to the user or redirect to an error page
+    }
 };
+
 
 const AuthContext = React.createContext<IAuthContext | null>(null);
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const { storeSession, retriveSession, removeSession } = useStorage<IUser>(SESSION_NAME)
     const [currentUser, setCurrentUser] = useState<IUser | null | undefined>();
-
     const setActiveCurrentUser = (user: IUser) => {
         setCurrentUser(user);
-        storeSession(user)
     }
-
-    const logoutUser = () => {
-        removeSession()
-        setCurrentUser(undefined)
-    }
-
+    
+    useEffect(() => {
+        storeSession(currentUser);
+    }, [currentUser])
+    
     const requestOtp = async (phone: string) => {
         try {
             const sessionToken = await account.createPhoneSession(ID.unique(), '+91' + phone);
-            const userId = sessionToken.userId;
-
+            const userId = sessionToken?.userId;
+    
             return userId
         } catch (error) {
             console.error(error);
             throw error;
         }
     };
-
+    
+    const createJWT = async () => {
+        const response = await account.createJWT();
+        if (response && response.jwt) {
+            return response.jwt;
+        } else {
+            throw new Error('JWT not found in response');
+        }
+    }
+    
     const verifyOtp = async (userId: string, otp: string) => {
         try {
             let res = await account.updatePhoneSession(userId, otp);
-            return res
+            if (typeof res !== 'object') {
+                throw new Error('Unexpected response');
+            }
+            return res;
         } catch (error) {
             console.error(error);
             throw error;
         }
     };
+
+    const logoutUser = () => {
+        removeSession()
+        setCurrentUser(undefined)
+    }
+
 
     const updateName = async (name: string) => {
         try {
@@ -77,10 +103,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             console.error(error);
             throw error;
         }
-    }
-    const createJWT = async () => {
-        const response = await account.createJWT();
-        return response.jwt
     }
     useEffect(() => {
         const retriveData = async () => {

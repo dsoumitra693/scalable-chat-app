@@ -1,5 +1,3 @@
-import { AppwriteException } from "appwrite";
-
 type MsgStatus = 'read' | 'sent' | 'received';
 
 export interface IMessage {

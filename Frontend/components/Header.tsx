@@ -1,26 +1,28 @@
-import React from 'react'
 import { Appbar } from 'react-native-paper'
 import { useRouter } from 'expo-router'
+import React, { memo, useCallback } from 'react'
 
-
-
-interface HeaderProps {
+export interface HeaderProps {
     title:string;
 }
 
-const Header:React.FC<HeaderProps> = ({title}) => {
+const Header:React.FC<HeaderProps> = memo(({title}) => {
     const router = useRouter()
-    const _goBack = () => {
-        router.back()
-    }
+    const _goBack = useCallback(() => {
+        if (router) {
+            router.back()
+        }
+    }, [router])
+
+    const ICON_NAME = 'magnify';
 
     return (
         <Appbar.Header>
             <Appbar.BackAction onPress={_goBack} />
             <Appbar.Content title={title} />
-            <Appbar.Action icon={'magnify'} />
+            <Appbar.Action icon={ICON_NAME} />
         </Appbar.Header>
     )
-}
+})
 
 export default Header

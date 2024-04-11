@@ -1,8 +1,8 @@
 import React, { createContext, useContext } from "react";
 import { useStorage } from "../hooks/useStorage";
 import { IMessage, IPeople } from "../Types";
-import useUser from "../hooks/useUser";
 import { defaultAvatarImg } from "../constants";
+import useContacts from "../hooks/useContacts";
 
 const SESSION_NAME = 'PEOPLE_SESSION';
 
@@ -11,72 +11,100 @@ interface PeopleProviderProps {
 }
 
 interface IPeopleContext {
-    getPeople: () => Promise<IPeople[]>;
+    getPeoples: () => Promise<IPeople[]>;
     storeMsg: (msg: IMessage) => Promise<void>;
+}
+
+class PeopleProviderError extends Error {
+    stack: string | undefined;
+
+    constructor(message: string = 'An error occurred in the PeopleProvider context') {
+        super(message);
+        this.name = 'PeopleProviderContextError';
+        this.stack = new Error().stack;
+    }
+
+    toString(): string {
+        return `${this.name}: ${this.message}`;
+    }
 }
 
 const PeopleContext = createContext<IPeopleContext | null>(null);
 
 const PeopleProvider: React.FC<PeopleProviderProps> = ({ children }) => {
-    const { storeSession, retriveSession } = useStorage<IPeople[] | undefined>(SESSION_NAME);
-    const { searchUser } = useUser()
-    const getPeople = async (): Promise<IPeople[]> => {
+    const { storeSession, retriveSession, removeSession } = useStorage<IPeople[] | undefined>(SESSION_NAME);
+    const { getLocalContacts } = useContacts()
+    const getPeoples = async (): Promise<IPeople[]> => {
         const peopleMap = await retriveSession();
-        console.log("log from peopleMap", peopleMap)
-        if (peopleMap) {
+        if (!peopleMap) {
             return [];
         }
 
-        const peoples = peopleMap
+        const clonedPeopleMap = {...peopleMap};
+        const peoples = clonedPeopleMap;
         return peoples;
     };
 
     const storeMsg = async (msg: IMessage): Promise<void> => {
-        console.log("log from storeMsg", msg)
-        let prevPeopleMap = await retriveSession();
-        const sender = msg.sender;
-        console.log("log from peopleMap", prevPeopleMap)
+        let prevPeoples = await retriveSession()
+        let reciver = msg.reciver
+        let data: IPeople[]
 
-        let people: IPeople
-        if (prevPeopleMap == undefined) {
-            prevPeopleMap = []
-            people = prevPeopleMap?.find(pep => pep.phone == sender);
-        }
+        let people = prevPeoples?.find(people => people.phone === reciver)
 
-        let newPeople: IPeople
-        if (!!people) {
-            newPeople = {
-                ...people,
-                lastmsg: {
-                    content: msg.content,
-                    timeStamp: msg.timestamp
-                },
-                msges: [...people.msges, msg],
-                unreadMsgCount: ++people.unreadMsgCount
-            }
+        if (prevPeoples !== undefined && people !== undefined) {
+            data = prevPeoples.map(people => {
+                if (people.phone === reciver) {
+                    return {
+                        ...people,
+                        msges: [...people.msges, msg],
+                        lastmsg: {
+                            content: msg.content,
+                            timeStamp: msg.timestamp,
+                        },
+                    };
+                }
+                return people;
+            });
+        } else if (prevPeoples !== undefined) {
+            let localcontact = (await getLocalContacts())?.find(
+                contact => !!contact?.phoneNumbers?.find(phone => phone.number === reciver)
+            )
+            data = [
+                ...prevPeoples,
+                {
+                    name: localcontact.name || msg.reciver,
+                    phone: msg.reciver,
+                    avatar: localcontact.image.uri || defaultAvatarImg,
+                    msges: [msg],
+                    lastmsg: {
+                        content: msg.content,
+                        timeStamp: msg.timestamp,
+                    },
+                    unreadMsgCount: 0,
+                }]
         } else {
-            let users = await searchUser([msg.reciver])
-            newPeople = {
-                name: users[0].name,
-                phone: users[0].phone,
-                avatar: defaultAvatarImg,
-                unreadMsgCount: 1,
-                lastmsg: {
-                    content: msg.content,
-                    timeStamp: msg.timestamp
-                },
-                msges: [msg]
-            }
+            let localcontact = (await getLocalContacts())?.find(
+                contact => !!contact?.phoneNumbers?.find(phone => phone.number === reciver)
+            )
+            data = [
+                {
+                    name: localcontact.name || msg.reciver,
+                    phone: msg.reciver,
+                    avatar: localcontact.image.uri || defaultAvatarImg,
+                    msges: [msg],
+                    lastmsg: {
+                        content: msg.content,
+                        timeStamp: msg.timestamp,
+                    },
+                    unreadMsgCount: 0,
+                }]
         }
-
-        prevPeopleMap.push(newPeople);
-        console.log(prevPeopleMap)
-
-        storeSession(prevPeopleMap);
+        storeSession(data)
     };
 
     const value: IPeopleContext = {
-        getPeople,
+        getPeoples,
         storeMsg,
     };
 
@@ -90,7 +118,7 @@ const PeopleProvider: React.FC<PeopleProviderProps> = ({ children }) => {
 export const usePeoples = (): IPeopleContext => {
     const context = useContext(PeopleContext);
     if (!context) {
-        throw new Error("usePeopleContext must be used within a PeopleProvider");
+        throw new PeopleProviderError("usePeopleContext must be used within a PeopleProvider");
     }
     return context;
 };

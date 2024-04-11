@@ -7,14 +7,14 @@ import { IPeople } from '../../Types'
 import { View } from 'react-native'
 
 const Peoples = () => {
-    const { getPeople} = usePeoples()
+    const { getPeoples} = usePeoples()
     const [peoplesData, setpeoplesData] = useState<IPeople[]>()
     useEffect(() => {
         (async ()=>{
-            const _peoplesData: IPeople[] = await getPeople()
+            const _peoplesData: IPeople[] = await getPeoples()
             setpeoplesData(_peoplesData)
-        })
-    })
+        })()
+    },[])
     
     const { colors } = useTheme()
     return (

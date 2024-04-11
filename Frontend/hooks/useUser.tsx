@@ -1,5 +1,5 @@
 import { IUser } from '../Types'
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import { serverUrl } from '../constants'
 
 interface useUserReturnType {
@@ -8,18 +8,36 @@ interface useUserReturnType {
 
 const useUser = (): useUserReturnType => {
     const searchUser = async (phoneNumbers: string[]) => {
+        if (!Array.isArray(phoneNumbers) || phoneNumbers.length === 0) {
+            throw new Error("Invalid phone numbers");
+        }
 
-        // console.log(phoneNumbers)
-        let response = await axios.request({
+        const config: AxiosRequestConfig = {
             url: `${serverUrl}/search`,
             method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer <token>'
+            },
             data: { users: phoneNumbers },
-        })
+            timeout: 5000 // Set a timeout of 5 seconds
+        };
 
-        return response.data.users as IUser[]
-    }
+        try {
+            const response = await axios.request(config);
 
-    return { searchUser }
-}
+            if (response.status === 200 && response.data && Array.isArray(response.data.users)) {
+                return response.data.users as IUser[];
+            } else {
+                throw new Error('Invalid response format');
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    };
+
+    return { searchUser };
+};
 
 export default useUser

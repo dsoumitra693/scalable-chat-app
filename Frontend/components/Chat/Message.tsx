@@ -9,7 +9,8 @@ const Message = ({ content, sender, reciver, status, timestamp }: IMessage) => {
   const theme = useTheme();
   const { currentUser } = useAuth()
   const isUserSent = sender === currentUser.countrycode + currentUser.phone
-  let time = timestamp.toTimeString().slice(0, 5)
+  // let time = timestamp?.toTimeString()?.slice(0, 5)
+  let time = "00:00"
 
   const containerStyle = isUserSent
     ? { ...styles.userSentMessageContainer, backgroundColor: theme.colors.primary }

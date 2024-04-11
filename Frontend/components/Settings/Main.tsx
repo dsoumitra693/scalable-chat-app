@@ -5,16 +5,31 @@ import { Divider, List, TouchableRipple, useTheme } from 'react-native-paper'
 const Main = () => {
     const { colors } = useTheme()
     const router = useRouter()
+
+    const handlePress = () => {
+        router.push('/Settings/Theme')
+    }
+
+    const renderLeftIcon = () => {
+        return <List.Icon icon="palette" />
+    }
+
+    const renderRightIcon = () => {
+        return <List.Icon icon="chevron-right" />
+    }
+
+    const memoizedColors = React.useMemo(() => colors, [])
+
     return (
         <List.Section>
             <List.Subheader>General</List.Subheader>
-            <TouchableRipple onPress={() => router.push('/Settings/Theme')}>
+            <TouchableRipple onPress={handlePress}>
                 <List.Item title="Theme"
-                    left={() => <List.Icon icon="palette" />}
-                    right={() => <List.Icon icon="chevron-right" />}
+                    left={renderLeftIcon}
+                    right={renderRightIcon}
                 />
             </TouchableRipple>
-            <Divider style={{ backgroundColor: colors.disabled }} inset />
+            <Divider style={{ backgroundColor: memoizedColors.disabled }} inset />
         </List.Section>
     )
 }

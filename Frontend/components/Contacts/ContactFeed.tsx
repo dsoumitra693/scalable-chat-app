@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import useContacts from '../../hooks/useContacts'
 import LoadingIndicator from '../LoadingIndicator'
 import { List, Text, TouchableRipple, useTheme } from 'react-native-paper'
@@ -8,9 +8,19 @@ import { IContacts } from '../../Types'
 import { useRouter } from 'expo-router'
 
 const ContactFeed = () => {
-    let contacts = useContacts()
+    let { getContacts } = useContacts()
     const { colors } = useTheme()
     const router = useRouter()
+    const [contacts, setcontacts] = useState([])
+
+    useEffect(() => {
+        (async function () {
+            let _contacts = await getContacts()
+            setcontacts(_contacts)
+        })()
+
+    }, [])
+
 
     const goToChat = (contact: IContacts) => {
         router.replace({
@@ -33,7 +43,7 @@ const ContactFeed = () => {
                     contacts
                         .filter(c => c.isOnFastChat)
                         .map((contact, idx) => (<ContactItem
-                            key={contact.phoneNumber + contact.id +idx}
+                            key={contact.phoneNumber + contact.id + idx}
                             contact={contact}
                             onPress={() => goToChat(contact)} />)
                         )) : null}
@@ -44,7 +54,7 @@ const ContactFeed = () => {
                     contacts
                         .filter(c => !c.isOnFastChat)
                         .map((contact, idx) => <ContactItem
-                        key={contact.phoneNumber + contact.id +idx}
+                            key={contact.phoneNumber + contact.id + idx}
                             contact={contact}
                             right={() => (
                                 <TouchableRipple style={{

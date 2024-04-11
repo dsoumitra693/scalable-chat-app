@@ -17,13 +17,20 @@ interface ISocketContext {
 
 const SocketContext = React.createContext<ISocketContext | null>(null);
 
+/**
+ * Custom hook that allows components to access the socket connection and send messages.
+ * @returns {Object} The state object containing the sendMessage function.
+ * @throws {Error} If the state is not defined.
+ */
 export const useSocket = () => {
-    const state = useContext(SocketContext)
+  const state = useContext(SocketContext);
 
-    if (!state) throw new Error('useSocket: State is not define')
+  if (!state) {
+    throw new Error('useSocket: State is not defined');
+  }
 
-    return state
-}
+  return state;
+};
 
 const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
 
@@ -37,33 +44,34 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
             storeMsg(msg)
             if (socket) {
                 socket.emit('private:message', msg)
+            } else {
+                console.warn('Socket is undefined or null');
             }
         },
-        [socket]);
+        [socket, storeMsg]);
 
-
+    const handleSocketError = (error: any) => {
+        console.error('Socket connection error:', error);
+        // Display error to the user
+    };
 
     useEffect(() => {
-        if (!currentUser?.jwt) return
+        if (!currentUser || !currentUser.jwt) return
         let _socket: Socket;
         try {
             console.log('Try to connect socket')
             _socket = io(SERVER_URL, {
                 query: {
-                    token: currentUser?.jwt
+                    token: currentUser.jwt
                 },
                 reconnection: true,
             });
-
 
             _socket.on('connect', () => {
                 console.log('Connected to socket server');
             });
 
-            _socket.on('error', (error) => {
-                console.error('Socket connection error:', error);
-                // Handle error as needed
-            });
+            _socket.on('error', handleSocketError);
 
             _socket.on('private:message', (msg) => {
                 storeMsg(msg)
@@ -84,7 +92,7 @@ const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
                 _socket.disconnect();
             }
         };
-    }, []);
+    }, [currentUser?.jwt, storeMsg]);
 
     return <SocketContext.Provider value={{ sendMessage }}>{children}</SocketContext.Provider>;
 };

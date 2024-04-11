@@ -1,0 +1,9 @@
+class MongoService {
+    constructor (){
+
+    }
+
+    connect(){
+        
+    }
+}

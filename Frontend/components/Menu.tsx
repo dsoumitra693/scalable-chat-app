@@ -1,18 +1,16 @@
+import { StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { IconButton, Menu as MenuBase, useTheme } from "react-native-paper";
 import { IMenuItem } from "../Types";
-
-
 
 interface MenuProps {
   menuItems: IMenuItem[]
 }
 
-
-const Menu: React.FC<MenuProps> = ({ menuItems }) => {
+const Menu: React.FC<MenuProps> = ({ menuItems = [] }) => {
   const [visible, setVisible] = useState(false);
   const { colors } = useTheme();
-  const openMenu = () => setVisible(true);
+  const toggleMenu = () => setVisible(!visible);
   const closeMenu = () => setVisible(false);
   return (
     <MenuBase
@@ -29,15 +27,17 @@ const Menu: React.FC<MenuProps> = ({ menuItems }) => {
           icon="menu"
           color={colors.primary}
           size={25}
-          onPress={openMenu}
+          onPress={toggleMenu}
         />
       }
     >
-      {menuItems?.map((item, idx) => (
+      {menuItems.map((item, idx) => (
         <MenuBase.Item
-          key={idx}
+          key={item.title || idx}
           onPress={() => {
-            item.callback()
+            if (typeof item.callback === 'function') {
+              item.callback();
+            }
             closeMenu();
           }}
           title={item.title}
